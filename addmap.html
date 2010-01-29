@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+  <title>Analyse text and add a map with its locations in pure JavaScript</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/base/base.css" type="text/css">
+  <style type="text/css" media="screen">
+    .locations{background:#efe;border:1px solid #999;-moz-border-radius:5px;
+               -moz-box-shadow:-2px 2px 2px rgba(66,66,66,.3);
+               position:relative;}
+    #content p.branding{position:absolute;font-size:10px;
+                        bottom:5px;right:5px;}
+    .locations img{float:left;}
+    .locations {overflow:auto;height:200px;}
+    .locations ul{float:left;}
+    #ft p{
+      text-align:right;
+      margin:3em;
+      font-size:80%;
+    }
+    a {color:#369;}
+    #content p{
+      font-size:110%;
+      font-weight:bold;
+    }
+    h1,h2,h3{
+      font-family:calibri,sans-serif;
+    }
+    #content{
+      border:1px solid #999;
+      border-left:none;
+      border-right:none;
+      padding:1em 0;
+      margin:1em 0;
+    }
+  </style>
+</head>
+<body>
+<div id="doc" class="yui-t7">
+  <div id="hd" role="banner"><h1>Analyse text and add a map with its locations in pure JavaScript</h1></div>
+  <div id="bd" role="main">
+    <h2>What is <code>addmap.js</code>?</h2>
+    <p>This is a script that analyses the text content of an HTML element, finds geographical locations and automatically links them to Google Maps. Furthermore, it paints a static map and adds a list of all the locations to the element.</p>
+    <h2>Demo</h2>
+    <div id="content">
+      <p>Currently I am on a working trip in Sunnyvale. I came via San Francisco and I need to go to San Jose later on to return the broken rental car. I'll probably check visit the Facebook guys in Palo Alto afterwards.</p>
+    </div>
+    <h2>Usage</h2>
+    <p>To use <code>addmap.js</code> you need to <a href="http://code.google.com/apis/maps/signup.html">sign up for a Google Maps API key</a> and embed the script in your document and call the <code>analyse</code> method with the <code>id</code> of the element you want to change as a parameter:</p>
+<pre><code>&lt;script src=&quot;http://github.com/codepo8/geotoys/raw/master/addmap.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+addmap.config.mapkey = &#x27;YOUR_API_KEY&#x27;;
+addmap.analyse(&#x27;content&#x27;);
+&lt;/script&gt;</code></pre>
+  <p>View source of this page to see an example, but please get your own key!</p>
+  <h2>Configure <code>addmap.js</code></h2>
+  <p>You can override a few configuration settings of <code>addmap.js</code>:</p>
+  <ul>
+    <li><code>addmap.config.mapkey</code> - the Google maps key (mandatory)</li>
+    <li><code>addmap.config.width</code> and <code>addmap.config.height</code> - the map dimensions</li>
+    <li><code>addmap.config.data</code> contains the geographical information that was found in the text once the script ran. This is useful for debugging and reuse of the data</li>
+  </ul>
+  <h2>Change the look and feel</h2>
+  <p>Addmap creates the following HTML inside the element you enhance:</p>
+
+<pre><code>&lt;div class=&quot;locations&quot;&gt;
+  &lt;img alt=&quot;Map&quot; src=&quot;&hellip;&quot;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;1&lt;/strong&gt; first location&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;2&lt;/strong&gt; second location&lt;/li&gt;
+    [&hellip;]
+  &lt;/ul&gt;
+  &lt;p class=&quot;branding&quot;&gt;Powered by: Google Maps, 
+  Yahoo Placemaker and YQL.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+    <p>Go nuts styling it.</p>
+  
+  </div>
+  <div id="ft" role="contentinfo"><p>Written by <a href="http://wait-till-i.com">Chris Heilmann</a>, powered by Google Maps, YQL and Yahoo Placemaker</p></div>
+</div>
+<script src="http://github.com/codepo8/geotoys/raw/master/addmap.js"></script>
+<script>
+addmap.config.mapkey = 'ABQIAAAAijZqBZcz-rowoXZC1tt9iRT2yXp_ZAY8_ufC'+
+                       '3CFXhHIE1NvwkxQQBCaF1R_k1GBJV5uDLhAKaTePyQ';
+addmap.analyse('content');
+</script>
+
+</body>
+</html>
