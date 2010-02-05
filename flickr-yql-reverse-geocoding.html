@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+  <title></title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/base/base.css" type="text/css">
+</head>
+<body>
+<div id="doc" class="yui-t7">
+  <div id="hd" role="banner"><h1></h1></div>
+  <div id="bd" role="main">
+  </div>
+  <div id="ft" role="contentinfo"><p></p></div>
+</div>
+<script type="text/javascript" charset="utf-8">
+ function getPlaceFromFlickr(lat,lon,callback){
+   // the YQL statement
+   var yql = 'select * from flickr.places where lat='+lat+' and lon='+lon;
+
+   // assembling the YQL webservice API
+   var url = 'http://query.yahooapis.com/v1/public/yql?q='+
+              encodeURIComponent(yql)+'&format=json&diagnostics='+
+              'false&callback='+callback;
+
+   // create a new script node and add it to the document
+   var s = document.createElement('script');
+   s.setAttribute('src',url);
+   document.getElementsByTagName('head')[0].appendChild(s);
+ };
+
+ // callback in case there is a place found
+ function output(o){
+   if(typeof(o.query.results.places.place) != 'undefined'){
+     alert(o.query.results.places.place.name);
+   }
+ }
+ 
+ // call the function with my current lat/lon 
+ getPlaceFromFlickr(37.416115,-122.02456,'output');
+</script>
+</body>
+</html>

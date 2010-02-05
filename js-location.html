@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+  <title>Getting the user location via  IP Geo lookup</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/base/base.css" type="text/css">
+  <style type="text/css" media="screen">
+  body,html{
+    background:#333;
+    color:#ccc;
+  }
+  #doc{
+    background:#f8f8f8;
+    color:#333;
+    border:1em solid #f8f8f8;
+    font-family:georgia,serif;
+  }
+  h1{
+    font-size:180%;
+    color:#363;
+  }
+  h2{
+    font-size:150%;
+    color:#393;
+  }
+  h3{
+    font-size:140%;
+    color:#696;
+  }
+  p,li{font-size:130%;}
+  ul{margin:0 0 0 1.5em;}
+  li{padding:.2em 0;}
+  li strong{
+    width:8em;
+    float:left;
+    display:block;
+  }
+  a{color:#363;}
+  #ft p{
+    font-size:80%;
+    text-align:right;
+  }
+  #map{
+    height:300px;
+    width:300px;
+    position:relative;
+  }
+  #map span{
+    height:280px;
+    width:280px;
+    background:rgba(0,0,0,.5);
+    color:#fff;
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    font-size:200%;
+    padding:10px;
+    overflow:hidden;
+  }
+  #map span strong{display:block;color:#0f0;}
+  </style>
+</head>
+<body>
+<div id="doc" class="yui-t7">
+  <div id="hd" role="banner"><h1>Getting location from IP</h1></div>
+  <div id="bd" role="main">
+    <h2>Map and info</h2>
+       <div class="yui-g">
+         <div class="yui-u first"><div id="map"></div>
+      </div>
+      <div class="yui-u" id="info"></div>
+    </div>
+    <h2>Thanks</h2>
+    <p>Thanks to <a href="http://www.maxmind.com">Maxmind</a> for the Geo IP database.</p>
+  </div>
+  <div id="ft" role="contentinfo"><p>Written by <a href="http://wait-till-i.com">Chris Heilmann</a></p></div>
+</div>
+<script type="text/javascript" src="http://j.maxmind.com/app/geoip.js"></script>
+<script>
+(function(){
+
+  var info = document.getElementById('info');
+  var lat = geoip_latitude();
+  var lon = geoip_longitude();
+  var city = geoip_city();
+  var out = '<h3>Information from your IP</h3>'+ 
+            '<ul>'+
+            '<li>Latitude: ' + lat + '</li>'+
+            '<li>Longitude: ' + lon + '</li>'+
+            '<li>City: ' + city + '</li>'+
+            '<li>Region: ' + geoip_region() + '</li>'+
+            '<li>Region Name: ' + geoip_region_name() + '</li>'+
+            '<li>Postal Code: ' + geoip_postal_code() + '</li>'+
+            '<li>Country Code: ' + geoip_country_code() + '</li>'+
+            '<li>Country Name: ' + geoip_country_name() + '</li>'+
+            '</ul>';
+  info.innerHTML = out;
+  var url = 'http://maps.google.com/maps/api/staticmap?center='+
+            lat+','+lon+'&sensor=false&size=300x300&maptype=roadmap&key='+
+            'ABQIAAAAijZqBZcz-rowoXZC1tt9iRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQQBCa'+
+            'F1R_k1GBJV5uDLhAKaTePyQ&markers=color:blue|label:I|'+lat+
+            ','+lon+'6&visible='+lat+','+lon+'|'+(+lat+1)+','+(+lon+1);
+  var map = document.getElementById('map');
+  map.innerHTML = '<img src="'+url+'" alt="'+city+'">';
+  
+})();
+</script>
+</body>
+</html>
+  

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+  <title></title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/base/base.css" type="text/css">
+  <style type="text/css" media="screen">
+    #map{height:300px;width:400px;}
+  </style>
+</head>
+<body>
+<div id="doc" class="yui-t7">
+  <div id="hd" role="banner"><h1></h1></div>
+  <div id="bd" role="main">
+    <div id="map"></div>
+  </div>
+  <div id="ft" role="contentinfo"><p></p></div>
+</div>
+<script>
+</script>
+
+<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAijZqBZcz-rowoXZC1tt9iRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQQBCaF1R_k1GBJV5uDLhAKaTePyQ"></script>
+<script type="text/javascript">
+  google.load("maps", "2");
+  // Call this function when the page has been loaded
+   function initialize() {
+     navigator.geolocation.getCurrentPosition(function(position){
+       map = new GMap2(document.getElementById("map"));
+       lat1 = position.coords.latitude;
+       lon1 = position.coords.longitude;
+       bound = new google.maps.LatLngBounds(); 
+       var center = new GLatLng(position.coords.latitude,position.coords.longitude);
+       bound.extend(center);
+       map.setCenter(center, 13);
+       var marker = new GMarker(center, {draggable: true});
+       map.addOverlay(marker);
+       map.addControl(new GMapTypeControl());
+       map.addControl(new GLargeMapControl());     
+       var s = document.createElement('script');
+       s.setAttribute('src',
+                      'http://jsonip.appspot.com/?callback=setip');
+       document.getElementsByTagName('head')[0].appendChild(s);
+    })
+   }
+   google.setOnLoadCallback(initialize);
+   function setip(o){
+     var s = document.createElement('script');
+     s.setAttribute('src',
+                    'http://geoip.pidgets.com?ip='+o.ip+'&format=json&callback=setMarker');
+     document.getElementsByTagName('head')[0].appendChild(s);
+   }
+   function setMarker(o){
+     
+     var loc = new GLatLng(o.latitude,o.longitude);
+     var marker = new GMarker(loc,{draggable: true});
+     map.addOverlay(marker);
+     bound.extend(loc);
+     distance(lat1,lon1,o.latitude,o.longitude);
+   }
+   function distance(lat1,lon1,lat2,lon2){
+     // thanks to http://www.johndcook.com/lat_long_distance.html
+    var rho = 3960.0;
+    var phi_1 = (90.0 - lat1) * Math.PI / 180.0;
+    var phi_2 = (90.0 - lat2) * Math.PI / 180.0;
+    var theta_1 = lon1 * Math.PI / 180.0;
+    var theta_2 = lon2 * Math.PI / 180.0;
+    var d = rho * Math.acos( 
+      Math.sin(phi_1) * 
+      Math.sin(phi_2) * 
+      Math.cos(theta_1 - theta_2) +
+      Math.cos(phi_1) * 
+      Math.cos(phi_2) 
+    );
+    var output = "Distance = " + Math.round(d) + " miles or " + Math.round(1.609344*d) + " kilometers";
+    console.log(output);
+     }   
+</script>
+</body>
+</html>
+  

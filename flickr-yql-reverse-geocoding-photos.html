@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+  <title>Geolocated Photos in Flickr</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/base/base.css" type="text/css">
+  <style type="text/css" media="screen">
+    #photos ul{
+      overflow:hidden;
+      list-style:none;
+      margin:0;
+      padding:0;
+    }
+    #photos li{
+      float:left;
+      padding:5px;
+      list-style:none;
+    }
+    #photos li img{
+      border:5px solid #369;
+      -moz-border-radius:5px;
+    }
+  </style>
+</head>
+<body>
+<div id="doc" class="yui-t7">
+  <div id="hd" role="banner"><h1>Geolocated Photos in Flickr</h1></div>
+  <div id="bd" role="main">
+    <div id="photos"></div>
+  </div>
+  <div id="ft" role="contentinfo"><p></p></div>
+</div>
+<script type="text/javascript" charset="utf-8">
+ 
+ function getPlaceFromFlickr(lat,lon,callback){
+   // the YQL statement
+   var yql = 'select * from flickr.places where lat='+lat+' and lon='+lon;
+   callJSONPService(yql,callback)
+ };
+
+ // callback in case there is a place found
+ function output(o){
+   var container = document.getElementById('photos');
+   if(typeof(o.query.results.places.place) != 'undefined'){
+     var yql = 'select * from flickr.photos.search where woe_id='+
+                o.query.results.places.place.woeid;
+     callJSONPService(yql,'showPhotos');
+     container.innerHTML = '<h2>Photos in '+
+                              o.query.results.places.place.name +
+                           '</h2>';
+   }
+ };
+ function showPhotos(o){
+   var container = document.getElementById('photos');
+   var results = o.query.results.photo;
+   var out = '<ul>';
+   for(var i=0,j=results.length;i<j;i++){
+     var cur = results[i];
+     var src = 'http://farm' + cur.farm + '.static.flickr.com/'+
+                         cur.server + '/' + cur.id + '_' + cur.secret +
+                         '_s.jpg';
+     out += '<li><img src="'+src+'" alt="'+cur.title+'"></li>';
+   }
+   out += '</ul>';
+   container.innerHTML += out;
+ }
+ function callJSONPService(yql,callback){
+   var old = document.getElementById('jsonsource');
+   if(old){
+     old.parentNode.removeChild(old);
+   }
+   var url = 'http://query.yahooapis.com/v1/public/yql?q='+
+              encodeURIComponent(yql)+'&format=json&diagnostics='+
+              'false&callback='+callback;
+
+   // create a new script node and add it to the document
+   var s = document.createElement('script');
+   s.setAttribute('src',url);
+   s.setAttribute('id','jsonsource');
+   document.getElementsByTagName('head')[0].appendChild(s);
+ } 
+ // call the function with my current lat/lon 
+ getPlaceFromFlickr(37.416115,-122.02456,'output');
+</script>
+</body>
+</html>

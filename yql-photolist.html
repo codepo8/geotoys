@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+  <title>Geolocated Photos in Flickr</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/base/base.css" type="text/css">
+  <style type="text/css" media="screen">
+    #photos ul{
+      overflow:hidden;
+      list-style:none;
+      margin:0;
+      padding:0;
+    }
+    #photos li{
+      float:left;
+      padding:5px;
+      list-style:none;
+    }
+    #photos li img{
+      border:5px solid #369;
+      -moz-border-radius:5px;
+    }
+  </style>
+</head>
+<body>
+<div id="doc" class="yui-t7">
+  <div id="hd" role="banner"><h1>Geolocated Photos in Flickr</h1></div>
+  <div id="bd" role="main">
+    <div id="photos"></div>
+  </div>
+  <div id="ft" role="contentinfo"><p></p></div>
+</div>
+<script type="text/javascript" charset="utf-8">
+  function photos(o){
+    console.log(o);
+    var container = document.getElementById('photos');
+    container.innerHTML = o.results;
+  }
+</script>
+<script src="http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20flickr.photolist%20where%20location%3D%22paris%2Cfr%22%20and%20text%3D%22%22%20and%20amount%3D10&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=photos"></script>
+</body>
+</html>
